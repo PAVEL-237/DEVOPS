@@ -1,0 +1,65 @@
+services:
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    ports:
+      - "5174:80"
+    restart: unless-stopped
+    networks:
+      - monitoring_net
+
+  server:
+    build:
+      context: ./server
+    ports:
+      - "8000:8000"  
+    volumes:
+      - ./server:/app
+    networks:
+      - monitoring_net
+
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    networks:
+      - monitoring_net
+
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana-storage:/var/lib/grafana
+    depends_on:
+      - prometheus
+    networks:
+      - monitoring_net
+
+  proxy:
+    image: nginx:alpine
+    container_name: nginx_proxy
+    ports:
+      - "80:80"
+    volumes:
+      - ./proxy/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - client
+      - server
+      - prometheus
+      - grafana
+    networks:
+      - monitoring_net
+
+
+networks:
+  monitoring_net:
+    driver: bridge
+
+volumes:
+  grafana-storage:
