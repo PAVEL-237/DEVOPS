@@ -1,3 +1,5 @@
+version: '3.9'
+
 services:
   client:
     build:
@@ -13,9 +15,13 @@ services:
     build:
       context: ./server
     ports:
-      - "8000:8000"  
+      - "8000:8000"
     volumes:
       - ./server:/app
+    environment:
+      - DEBUG=1
+      - SECRET_KEY=your-secret-key-here
+      - DJANGO_SETTINGS_MODULE=myproject.settings
     networks:
       - monitoring_net
 
@@ -33,7 +39,7 @@ services:
   grafana:
     image: grafana/grafana
     ports:
-      - "3000:3000"
+      - "3001:3000"
     volumes:
       - grafana-storage:/var/lib/grafana
     depends_on:
@@ -55,7 +61,6 @@ services:
       - grafana
     networks:
       - monitoring_net
-
 
 networks:
   monitoring_net:
