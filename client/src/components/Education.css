@@ -1,0 +1,122 @@
+.education {
+  padding: 5rem 0;
+}
+
+.education-timeline {
+  position: relative;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.education-timeline::before {
+  content: '';
+  position: absolute;
+  width: 2px;
+  background-color: var(--primary-color);
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  margin-left: -1px;
+}
+
+.education-item {
+  padding: 2rem 0;
+  position: relative;
+}
+
+.education-content {
+  background-color: var(--background-color);
+  padding: 2rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: relative;
+  width: 45%;
+  margin-left: 5%;
+}
+
+.education-item:nth-child(even) .education-content {
+  margin-left: 50%;
+}
+
+.education-content::before {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background-color: var(--primary-color);
+  border-radius: 50%;
+  top: 50%;
+  transform: translateY(-50%);
+  left: -10px;
+}
+
+.education-item:nth-child(even) .education-content::before {
+  left: auto;
+  right: -10px;
+}
+
+.education-content h3 {
+  color: var(--primary-color);
+  margin-bottom: 0.5rem;
+}
+
+.education-content h4 {
+  color: var(--text-color);
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+
+.period {
+  display: block;
+  color: var(--light-text);
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.description {
+  color: var(--light-text);
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+.achievements {
+  list-style-type: none;
+  padding: 0;
+}
+
+.achievements li {
+  position: relative;
+  padding-left: 1.5rem;
+  margin-bottom: 0.5rem;
+  color: var(--light-text);
+}
+
+.achievements li::before {
+  content: '•';
+  color: var(--primary-color);
+  position: absolute;
+  left: 0;
+}
+
+@media (max-width: 768px) {
+  .education-timeline::before {
+    left: 0;
+  }
+
+  .education-content {
+    width: 90%;
+    margin-left: 10%;
+  }
+
+  .education-item:nth-child(even) .education-content {
+    margin-left: 10%;
+  }
+
+  .education-content::before {
+    left: -10px;
+  }
+
+  .education-item:nth-child(even) .education-content::before {
+    left: -10px;
+  }
+} 

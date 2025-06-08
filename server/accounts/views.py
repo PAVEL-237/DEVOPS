@@ -40,7 +40,8 @@ def login_view(request):
                     'id': user.id,
                     'username': user.username,
                     'email': user.email
-                }
+                },
+                'redirect_url': '/'  # Redirection vers la page d'accueil (portfolio)
             })
         else:
             logger.warning(f"Échec de connexion pour l'utilisateur: {username}")

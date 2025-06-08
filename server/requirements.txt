@@ -6,3 +6,4 @@ pyyaml
 requests
 django-cors-headers
 celery>=5.0.0
+prometheus-client

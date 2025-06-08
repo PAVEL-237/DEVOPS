@@ -1,13 +1,31 @@
-FROM node:18 as build
+# Build stage
+FROM node:18-alpine as build
 
 WORKDIR /app
-COPY frontend/package*.json ./frontend/
-COPY frontend ./frontend/
-RUN cd frontend && npm install && npm run build
 
+# Copy package files
+COPY package*.json ./
 
+# Install dependencies
+RUN npm install
+
+# Copy source code
+COPY . .
+
+# Build the application
+RUN npm run build
+
+# Production stage
 FROM nginx:alpine
-COPY --from=build /app/frontend/dist /usr/share/nginx/html
 
-EXPOSE 5174
+# Copy built assets from build stage
+COPY --from=build /app/build /usr/share/nginx/html
+
+# Copy nginx configuration if needed
+# COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+# Expose port 80
+EXPOSE 80
+
+# Start nginx
 CMD ["nginx", "-g", "daemon off;"]

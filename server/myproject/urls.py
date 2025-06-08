@@ -5,20 +5,43 @@ from accounts import views  # Remplace "mainapp" par le nom de ton app si diffé
 from django.http import JsonResponse
 
 def home_view(request):
+    # Si l'utilisateur n'est pas connecté, rediriger vers la page de connexion
+    if not request.user.is_authenticated:
+        return JsonResponse({
+            'status': 'error',
+            'message': 'Authentication required',
+            'redirect_url': '/api/login/'
+        }, status=401)
+    
+    # Si l'utilisateur est connecté, afficher le portfolio
     return JsonResponse({
         'status': 'success',
-        'message': 'API is running',
-        'endpoints': {
-            'login': '/api/login/',
-            'logout': '/logout/',
-            'admin': '/admin/'
+        'message': 'Portfolio page',
+        'data': {
+            'title': 'Mon Portfolio',
+            'description': 'Bienvenue sur mon portfolio',
+            'user': {
+                'username': request.user.username,
+                'email': request.user.email
+            }
+        }
+    })
+
+def portfolio_view(request):
+    return JsonResponse({
+        'status': 'success',
+        'message': 'Portfolio page',
+        'data': {
+            'title': 'Mon Portfolio',
+            'description': 'Bienvenue sur mon portfolio'
         }
     })
 
 urlpatterns = [
-    path('', home_view, name='home'),  # Route par défaut
+    path('', home_view, name='home'),  # Route par défaut qui affiche le portfolio
     path('admin/', admin.site.urls),
     path('api/login/', views.login_view, name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+    path('portfolio/', portfolio_view, name='portfolio'),
     # path('dashboard/', views.dashboard_view, name='dashboard'),  # Désactivé temporairement
 ]
